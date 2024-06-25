@@ -1,11 +1,28 @@
 import React from 'react'
-import { useGetPizzaOrdersQuery } from '../state/pizzaOrderApi'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSizeFilter } from '../state/sizefilterslice'
+// import { useGetPizzaOrdersQuery } from '../state/pizzaOrderApi'
 
 export default function OrderList() {
-  const {data: orders = [], isFetching} = useGetPizzaOrdersQuery()
-  if(isFetching) return 'Loading...'
+  const dispatch = useDispatch()
+  const sizeFilter = useSelector((state) => state.sizeFilter)
+
+  // const {data: orders = [], isFetching} = useGetPizzaOrdersQuery()
+  // if(isFetching) return 'Loading...'
+
+  const handleSizeClick = (size) => {
+    dispatch(setSizeFilter(size))
+  }
+
+ 
   return (
+      
     <div id="orderList">
+      <button onClick={() => handleSizeClick('All')}>All</button>
+      <button onClick={() => handleSizeClick('L')}>Large</button>
+      <button onClick={() => handleSizeClick('M')}>Medium</button>
+      <button onClick={() => handleSizeClick('S')}>Small</button>
+
       <h2>Pizza Orders</h2>
       <ol>
         {
@@ -13,7 +30,9 @@ export default function OrderList() {
             return (
               <li key={order.id}>
                 <div>
-                  order details here
+                  <p>Name:{order.fullName}</p>
+                  <p>Size:{order.size}</p>
+                  <p>Toppings:{order.toppings.join(", ")}</p>
                 </div>
               </li>
             )

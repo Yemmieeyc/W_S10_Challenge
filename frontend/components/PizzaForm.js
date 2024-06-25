@@ -1,4 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { usePostPizzaOrderMutation } from '../state/pizzaOrderApi'
+
 
 const initialFormState = { // suggested
   fullName: '',
@@ -9,10 +11,31 @@ const initialFormState = { // suggested
   '4': false,
   '5': false,
 }
+const [formState, setFormState] = useState(initialFormState)
+
+const handleInputChange = (event) =>{
+  const {name, value} = event.target
+  setFormState({...formState, 
+    [name]: value,
+  })
+}
+
+const handleCheckBoxesChange = (evt) => {
+  const {name, checked} = evt.target;
+  setFormState({
+    ...formState,
+    [name]: checked,
+  })
+}
+
+const handleSubmit = (evt) = {
+  evt.preventDefault()
+}
+
 
 export default function PizzaForm() {
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h2>Pizza Form</h2>
       {true && <div className='pending'>Order in progress...</div>}
       {true && <div className='failure'>Order failed: fullName is required</div>}
@@ -26,6 +49,8 @@ export default function PizzaForm() {
             name="fullName"
             placeholder="Type full name"
             type="text"
+            value={formState.fullName}
+            onChange={handleInputChange}
           />
         </div>
       </div>
