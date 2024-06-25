@@ -1,15 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { pizzaOrderApi } from './pizzaOrderApi'
 import sizeFilterReducer from './sizefilterslice'
+import formReducer from './formSLice'
 
-const exampleReducer = (state = { count: 0 }) => {
-  return state
-}
+// const exampleReducer = (state = { count: 0 }) => {
+//   return state
+// }
 
 export const resetStore = () => configureStore({
   reducer: {
-    example: exampleReducer,
+    //example: exampleReducer,
     // add your reducer(s) here
+    form: formReducer,
     sizeFilter: sizeFilterReducer,
     [pizzaOrderApi.reducerPath]: pizzaOrderApi.reducer,
   },

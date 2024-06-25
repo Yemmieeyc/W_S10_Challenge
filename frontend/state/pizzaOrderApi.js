@@ -5,11 +5,11 @@ reducerPath: 'pizzaOrderApi',
 baseQuery: fetchBaseQuery({baseUrl:'http://localhost:9009/api/pizza'}),
 endpoints: (builder) => ({
     getPizzaOrders: builder.query({
-        query: () => '/pizza/history',
+        query: () => 'history',
     }),
     postPizzaOrder: builder.mutation({
         query: (newOrder) => ({
-            url: '/pizza/order',
+            url: 'order',
             method: 'POST',
             body: newOrder,
         }),

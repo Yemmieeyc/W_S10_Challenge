@@ -1,44 +1,62 @@
-import React, {useState} from 'react'
-import { usePostPizzaOrderMutation } from '../state/pizzaOrderApi'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { 
+  setFormField,
+  setTopping,
+  setStatus,
+  setError,
+  resetForm,
+
+ } from '../state/formSLice'
+ import { usePostPizzaOrderMutation } from '../state/pizzaOrderApi'
 
 
-const initialFormState = { // suggested
-  fullName: '',
-  size: '',
-  '1': false,
-  '2': false,
-  '3': false,
-  '4': false,
-  '5': false,
-}
-const [formState, setFormState] = useState(initialFormState)
+// const initialFormState = { // suggested
+//   fullName: '',
+//   size: '',
+//   '1': false,
+//   '2': false,
+//   '3': false,
+//   '4': false,
+//   '5': false,
+// }
+// const [formState, setFormState] = useState(initialFormState)
+
+
+export default function PizzaForm() {
+  const dispatch = useDispatch()
+  const formState = useSelector((state) => state.form)
+  const [postPizzaOrder] = usePostPizzaOrderMutation()
 
 const handleInputChange = (event) =>{
   const {name, value} = event.target
-  setFormState({...formState, 
-    [name]: value,
-  })
+  dispatch(setFormField({field: name, value}))
 }
 
 const handleCheckBoxesChange = (evt) => {
   const {name, checked} = evt.target;
-  setFormState({
-    ...formState,
-    [name]: checked,
-  })
+ dispatch(setTopping({topping: name, checked}))
 }
 
-const handleSubmit = (evt) = {
-  evt.preventDefault()
+const handleSubmit = async (evt) => {
+  evt.preventDefault(),
+  dispatch(setStatus('pending'))
+
+  try{
+    await postPizzaOrder(formState).unwrap()
+    dispatch(setStatus('succeeded'))
+    dispatch(resetForm())
+  } catch (error) {
+    dispatch(setStatus('failed'))
+    dispatch(setError(error.data.message))
+  }
 }
 
-
-export default function PizzaForm() {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Pizza Form</h2>
-      {true && <div className='pending'>Order in progress...</div>}
-      {true && <div className='failure'>Order failed: fullName is required</div>}
+      {formState.status === 'pending' && <div className='pending'>Order in progress...</div>}
+      {formState.status === 'failed' && <div className='failure'>Order failed: {formState.error}</div>}
 
       <div className="input-group">
         <div>
@@ -58,7 +76,12 @@ export default function PizzaForm() {
       <div className="input-group">
         <div>
           <label htmlFor="size">Size</label><br />
-          <select data-testid="sizeSelect" id="size" name="size">
+          <select data-testid="sizeSelect" 
+          id="size" 
+          name="size"
+          value={formState.size}
+          onChange={handleInputChange}
+          >
             <option value="">----Choose size----</option>
             <option value="S">Small</option>
             <option value="M">Medium</option>
@@ -69,19 +92,41 @@ export default function PizzaForm() {
 
       <div className="input-group">
         <label>
-          <input data-testid="checkPepperoni" name="1" type="checkbox" />
+          <input data-testid="checkPepperoni" 
+          name="1" 
+          type="checkbox"
+          checked={formState['1']}
+          onChange={handleCheckBoxesChange}
+          />
           Pepperoni<br /></label>
         <label>
-          <input data-testid="checkGreenpeppers" name="2" type="checkbox" />
+          <input data-testid="checkGreenpeppers" 
+          name="2" 
+          type="checkbox"
+          checked={formState['2']}
+          onChange={handleCheckBoxesChange}
+          />
           Green Peppers<br /></label>
         <label>
-          <input data-testid="checkPineapple" name="3" type="checkbox" />
+          <input data-testid="checkPineapple" 
+          name="3" 
+          type="checkbox"
+          checked={formState['3']}
+          onChange={handleCheckBoxesChange} />
           Pineapple<br /></label>
         <label>
-          <input data-testid="checkMushrooms" name="4" type="checkbox" />
+          <input data-testid="checkMushrooms" 
+          name="4" 
+          type="checkbox"
+          checked={formState['4']}
+          onChange={handleCheckBoxesChange} />
           Mushrooms<br /></label>
         <label>
-          <input data-testid="checkHam" name="5" type="checkbox" />
+          <input data-testid="checkHam" 
+          name="5" 
+          type="checkbox"
+          checked={formState['5']}
+          onChange={handleCheckBoxesChange} />
           Ham<br /></label>
       </div>
       <input data-testid="submit" type="submit" />

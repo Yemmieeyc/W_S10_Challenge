@@ -1,14 +1,14 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSizeFilter } from '../state/sizefilterslice'
-// import { useGetPizzaOrdersQuery } from '../state/pizzaOrderApi'
+import { useGetPizzaOrdersQuery } from '../state/pizzaOrderApi'
 
 export default function OrderList() {
   const dispatch = useDispatch()
   const sizeFilter = useSelector((state) => state.sizeFilter)
 
-  // const {data: orders = [], isFetching} = useGetPizzaOrdersQuery()
-  // if(isFetching) return 'Loading...'
+  const {data: orders = [], isFetching} = useGetPizzaOrdersQuery()
+  if(isFetching) return 'Loading...'
 
   const handleSizeClick = (size) => {
     dispatch(setSizeFilter(size))
@@ -18,11 +18,6 @@ export default function OrderList() {
   return (
       
     <div id="orderList">
-      <button onClick={() => handleSizeClick('All')}>All</button>
-      <button onClick={() => handleSizeClick('L')}>Large</button>
-      <button onClick={() => handleSizeClick('M')}>Medium</button>
-      <button onClick={() => handleSizeClick('S')}>Small</button>
-
       <h2>Pizza Orders</h2>
       <ol>
         {
@@ -32,7 +27,7 @@ export default function OrderList() {
                 <div>
                   <p>Name:{order.fullName}</p>
                   <p>Size:{order.size}</p>
-                  <p>Toppings:{order.toppings.join(", ")}</p>
+                  <p>Toppings:{order.toppings.length}</p>
                 </div>
               </li>
             )
