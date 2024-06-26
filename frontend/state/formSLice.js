@@ -21,7 +21,7 @@ const formSlice = createSlice({
             state[action.payload.field] = action.payload.value
         },
         setTopping: (state, action) => {
-            state.toppings[action.payload.topping] = action.payload.checked
+            state[action.payload.topping] = action.payload.checked
         },
         setStatus: (state, action) => {
             state.status = action.payload
