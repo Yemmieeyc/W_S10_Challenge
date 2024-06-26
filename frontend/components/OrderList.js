@@ -21,13 +21,15 @@ export default function OrderList() {
       <h2>Pizza Orders</h2>
       <ol>
         {
-          orders.map((order) => {
+          orders.filter(order => sizeFilter === 'All' || order.size === sizeFilter)
+          
+          .map((order) => {
             return (
               <li key={order.id}>
                 <div>
                   <p>Name:{order.fullName}</p>
                   <p>Size:{order.size}</p>
-                  <p>Toppings:{order.toppings.length}</p>
+                  <p>Toppings:{(order.toppings || []).length}</p>
                 </div>
               </li>
             )
@@ -42,7 +44,9 @@ export default function OrderList() {
             return <button
               data-testid={`filterBtn${size}`}
               className={className}
-              key={size}>{size}</button>
+              key={size}
+              onClick={() => handleSizeClick(size)}
+              >{size}</button>
           })
         }
       </div>
