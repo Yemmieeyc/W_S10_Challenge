@@ -1,4 +1,4 @@
- import React from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { 
   setFullName, 
@@ -7,7 +7,14 @@ import {
   removeTopping, 
   resetOrder, 
   setFilterSize } from "../state/orderListSlice";
-import { useGetOrderListQuery, useCreatePizzaOrderMutation, useFilterOrderListByPizzaSizeQuery, useUpdatePizzaOrderMutation, useDeletePizzaOrderMutation } from "../state/orderListApi";
+
+import { 
+   useGetOrderListQuery,
+   useCreatePizzaOrderMutation, 
+   useFilterOrderListByPizzaSizeQuery, 
+   useUpdatePizzaOrderMutation, 
+   useDeletePizzaOrderMutation } from "../state/orderListApi";
+
 export default function OrderList() {
   const dispatch = useDispatch();
   const { data: orders, isLoading: gettingOrders, isFetching: refreshingOrders } = useGetOrderListQuery();
@@ -50,61 +57,3 @@ export default function OrderList() {
     </div>
   );
 }
-
-
-
-// import React from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { setSizeFilter } from '../state/sizefilterslice'
-// import { useGetPizzaOrdersQuery } from '../state/OrderListApi'
-
-// export default function OrderList() {
-//   const dispatch = useDispatch()
-//   const sizeFilter = useSelector((state) => state.sizeFilter)
-
-//   const {data: orders = [], isFetching} = useGetPizzaOrdersQuery()
-//   if(isFetching) return 'Loading...'
-
-//   const handleSizeClick = (size) => {
-//     dispatch(setSizeFilter(size))
-//   }
-
- 
-//   return (
-      
-//     <div id="orderList">
-//       <h2>Pizza Orders</h2>
-//       <ol>
-//         {
-//           orders.filter(order => sizeFilter === 'All' || order.size === sizeFilter)
-          
-//           .map((order) => {
-//             return (
-//               <li key={order.id}>
-//                 <div>
-//                   <p>Name:{order.fullName}</p>
-//                   <p>Size:{order.size}</p>
-//                   <p>Toppings:{(order.toppings || []).length}</p>
-//                 </div>
-//               </li>
-//             )
-//           })
-//         }
-//       </ol>
-//       <div id="sizeFilters">
-//         Filter by size:
-//         {
-//           ['All', 'S', 'M', 'L'].map(size => {
-//             const className = `button-filter${size === 'All' ? ' active' : ''}`
-//             return <button
-//               data-testid={`filterBtn${size}`}
-//               className={className}
-//               key={size}
-//               onClick={() => handleSizeClick(size)}
-//               >{size}</button>
-//           })
-//         }
-//       </div>
-//     </div>
-//   )
-// }
