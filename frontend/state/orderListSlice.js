@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
      fullName: '',
-  size: '',
+  size: 'All',
   toppings: [],
   1: false,
   2: false,

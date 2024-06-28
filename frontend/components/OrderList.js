@@ -21,7 +21,8 @@ export default function OrderList() {
   const [createPizzaOrder, { isLoading: creatingOrder }] = useCreatePizzaOrderMutation();
   const [updatePizzaOrder, { isLoading: updatingOrder }] = useUpdatePizzaOrderMutation();
   const [deletePizzaOrder, { isLoading: deletingOrder }] = useDeletePizzaOrderMutation();
-  const filterSize = useSelector((state) => state.orderList.filterSize);
+  const filterSize = useSelector((state) => state.orderList.filterSize) || 'All'
+  console.log(filterSize)
   const filteredOrders = filterSize === "All" ? orders : orders?.filter((order) => order.size === filterSize);
   return (
     <div id="orderList">
