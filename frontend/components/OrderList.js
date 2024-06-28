@@ -1,6 +1,12 @@
  import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setFullName, setSize, addTopping, removeTopping, resetOrder, setFilterSize } from "../state/orderListSlice";
+import { 
+  setFullName, 
+  setSize, 
+  addTopping, 
+  removeTopping, 
+  resetOrder, 
+  setFilterSize } from "../state/orderListSlice";
 import { useGetOrderListQuery, useCreatePizzaOrderMutation, useFilterOrderListByPizzaSizeQuery, useUpdatePizzaOrderMutation, useDeletePizzaOrderMutation } from "../state/orderListApi";
 export default function OrderList() {
   const dispatch = useDispatch();
